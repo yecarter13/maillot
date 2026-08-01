@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        SiteSetting::setValue('site_name', 'Fatil Store');
+        SiteSetting::setValue('site_name', 'Le Maillot Idéal');
+        SiteSetting::setValue('slogan', 'Porte ta passion.');
         SiteSetting::setValue('whatsapp_number', '');
         SiteSetting::setValue('delivery_info', 'Livraison partout au Cameroun');
         SiteSetting::setValue('hero_title', 'Les Maillots de Vos Clubs Préférés');
@@ -358,7 +359,7 @@ class DatabaseSeeder extends Seeder
             [
                 'customer_name' => 'Franck Manga',
                 'location' => 'Kribi',
-                'message' => 'Maillot du Barça reçu à Kribi, superbe qualité. Merci Fatil Store !',
+                'message' => 'Maillot du Barça reçu à Kribi, superbe qualité. Merci Le Maillot Idéal !',
                 'image' => '/images/customer-photos/phototheque5.jpg',
             ],
             [

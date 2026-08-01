@@ -20,6 +20,12 @@
             <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
                 {{ $heroTitle }}
             </h1>
+            @if ($globalSite->slogan)
+            <p class="mt-3 inline-flex items-center gap-2 text-lg sm:text-xl font-bold text-flame italic">
+                <svg class="w-5 h-5 text-grass-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l1.9 5.7L20 8l-4.5 3.9 1.4 5.6L12 14.4 7.1 17.5l1.4-5.6L4 8l6.1-.3z"/></svg>
+                {{ $globalSite->slogan }}
+            </p>
+            @endif
             <p class="mt-4 text-base sm:text-lg text-pitch-300 leading-relaxed max-w-xl">
                 {{ $heroSubtitle }}
             </p>

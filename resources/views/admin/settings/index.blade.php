@@ -19,6 +19,12 @@
                 <input type="text" name="site_name" id="site_name" value="{{ old('site_name', $settings['site_name']) }}" required
                        class="w-full px-4 py-2.5 border border-pitch-200 rounded-lg text-sm text-pitch-900 focus:outline-none focus:border-grass-500 focus:ring-1 focus:ring-grass-500">
             </div>
+            <div>
+                <label for="slogan" class="block text-sm font-medium text-pitch-800 mb-1.5">Slogan</label>
+                <input type="text" name="slogan" id="slogan" value="{{ old('slogan', $settings['slogan']) }}" placeholder="Ex : Porte ta passion."
+                       class="w-full px-4 py-2.5 border border-pitch-200 rounded-lg text-sm text-pitch-900 focus:outline-none focus:border-grass-500 focus:ring-1 focus:ring-grass-500">
+                <p class="mt-1.5 text-xs text-pitch-400">Affiché dans l'en-tête, le pied de page, le bandeau principal et la page de connexion.</p>
+            </div>
         </div>
 
         <div class="bg-white rounded-2xl border border-pitch-100 p-6 space-y-5">

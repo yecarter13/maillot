@@ -20,7 +20,12 @@
                     <path d="M7 4h10a3 3 0 013 3v2.5c-2.4 1.6-4 4.2-4 7 0 2.8 1.6 5.4 4 7V26a3 3 0 01-3 3H7a3 3 0 01-3-3v-2.5c2.4-1.6 4-4.2 4-7 0-2.8-1.6-5.4-4-7V7a3 3 0 013-3zm4 9a1 1 0 100 2 1 1 0 000-2zm2 0a1 1 0 100 2 1 1 0 000-2z"/>
                 </svg>
             </div>
-            <span class="text-2xl font-bold text-white tracking-tight">{{ $globalSite->name }}</span>
+            <span class="flex flex-col items-center">
+                <span class="text-2xl font-bold text-white tracking-tight">{{ $globalSite->name }}</span>
+                @if ($globalSite->slogan)
+                <span class="text-xs font-medium text-grass-400 mt-1 italic">{{ $globalSite->slogan }}</span>
+                @endif
+            </span>
         </a>
 
         <div class="bg-white rounded-2xl shadow-2xl p-8">

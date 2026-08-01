@@ -10,6 +10,9 @@
                     </div>
                     <span class="text-lg font-bold text-white">{{ $globalSite->name }}</span>
                 </div>
+                @if ($globalSite->slogan)
+                <p class="mt-1 text-sm font-semibold text-grass-400 italic">« {{ $globalSite->slogan }} »</p>
+                @endif
                 <p class="mt-4 text-sm leading-relaxed">
                     La boutique de référence au Cameroun pour les maillots de football et tenues de sport.
                     Qualité premium, prix abordables en FCFA et {{ strtolower($globalSite->deliveryInfo) }}.

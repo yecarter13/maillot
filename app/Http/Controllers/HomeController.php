@@ -42,7 +42,7 @@ class HomeController extends Controller
             ->get();
 
         $testimonials = [
-            (object) ['name' => 'Jean-Pierre Ndongo', 'location' => 'Douala', 'rating' => 5, 'text' => 'Maillot reçu en 3 jours à Douala, qualité top et exactement comme sur la photo. Je recommande Fatil Store !'],
+            (object) ['name' => 'Jean-Pierre Ndongo', 'location' => 'Douala', 'rating' => 5, 'text' => 'Maillot reçu en 3 jours à Douala, qualité top et exactement comme sur la photo. Je recommande Le Maillot Idéal !'],
             (object) ['name' => 'Aline Mbarga', 'location' => 'Yaoundé', 'rating' => 5, 'text' => 'Commande passée sur WhatsApp, réponse rapide et livraison impeccable. Mon fils adore son maillot du Real Madrid.'],
             (object) ['name' => 'Serge Kamdem', 'location' => 'Bafoussam', 'rating' => 4, 'text' => 'Très bon service, paiement à la livraison. Les tailles sont fidèles. Je reviendrai.'],
             (object) ['name' => 'Marie Claire Fouda', 'location' => 'Garoua', 'rating' => 5, 'text' => 'Excellente boutique en ligne. Le maillot des Lions Indomptables est magnifique. Livraison rapide même à Garoua.'],

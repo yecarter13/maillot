@@ -11,7 +11,8 @@ class SettingController extends Controller
     public function index()
     {
         $settings = [
-            'site_name' => SiteSetting::getValue('site_name', 'Fatil Store'),
+            'site_name' => SiteSetting::getValue('site_name', 'Le Maillot Idéal'),
+            'slogan' => SiteSetting::getValue('slogan', 'Porte ta passion.'),
             'whatsapp_number' => SiteSetting::getValue('whatsapp_number', ''),
             'delivery_info' => SiteSetting::getValue('delivery_info', 'Livraison partout au Cameroun'),
             'hero_title' => SiteSetting::getValue('hero_title', 'Les Maillots de Vos Clubs Préférés'),
@@ -26,6 +27,7 @@ class SettingController extends Controller
     {
         $data = $request->validate([
             'site_name' => 'required|string|max:255',
+            'slogan' => 'nullable|string|max:255',
             'whatsapp_number' => 'nullable|string|max:50',
             'delivery_info' => 'nullable|string|max:500',
             'hero_title' => 'nullable|string|max:255',
