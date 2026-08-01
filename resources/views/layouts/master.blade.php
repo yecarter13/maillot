@@ -29,6 +29,89 @@
 
     @include('partials.floating-whatsapp')
 
+    <div id="lightbox" class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/90 p-4" role="dialog" aria-modal="true" aria-label="Aperçu photo">
+        <button type="button" id="lightbox-close" class="absolute top-4 right-4 text-white/80 hover:text-white transition-colors" aria-label="Fermer">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        <button type="button" id="lightbox-prev" class="hidden absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white transition-colors" aria-label="Précédent">
+            <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <figure class="max-h-full max-w-4xl mx-auto flex flex-col items-center">
+            <img id="lightbox-img" src="" alt="" class="max-h-[80vh] max-w-full rounded-xl object-contain shadow-2xl">
+            <figcaption id="lightbox-caption" class="mt-3 text-white text-sm"></figcaption>
+        </figure>
+        <button type="button" id="lightbox-next" class="hidden absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white transition-colors" aria-label="Suivant">
+            <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+    </div>
+
+    <script>
+    (function () {
+        const lightbox = document.getElementById('lightbox');
+        if (!lightbox) return;
+
+        const img = document.getElementById('lightbox-img');
+        const cap = document.getElementById('lightbox-caption');
+        const prevBtn = document.getElementById('lightbox-prev');
+        const nextBtn = document.getElementById('lightbox-next');
+        let items = [];
+        let current = 0;
+
+        function render() {
+            if (!items.length) return;
+            img.src = items[current].src;
+            img.alt = items[current].alt || '';
+            cap.textContent = items[current].caption || '';
+            prevBtn.classList.toggle('hidden', items.length <= 1);
+            nextBtn.classList.toggle('hidden', items.length <= 1);
+        }
+
+        function show(index) {
+            current = (index + items.length) % items.length;
+            render();
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hide() {
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        document.querySelectorAll('[data-gallery]').forEach((el) => {
+            el.addEventListener('click', (e) => {
+                e.preventDefault();
+                const gallery = el.getAttribute('data-gallery');
+                const seen = new Set();
+                items = Array.from(document.querySelectorAll('[data-gallery="' + gallery + '"]')).map((x) => ({
+                    src: x.getAttribute('data-src'),
+                    caption: x.getAttribute('data-caption') || '',
+                    alt: x.getAttribute('data-alt') || ''
+                })).filter((x) => {
+                    if (!x.src || seen.has(x.src)) return false;
+                    seen.add(x.src);
+                    return true;
+                });
+                const index = items.findIndex((x) => x.src === el.getAttribute('data-src'));
+                show(index === -1 ? 0 : index);
+            });
+        });
+
+        prevBtn.addEventListener('click', () => show(current - 1));
+        nextBtn.addEventListener('click', () => show(current + 1));
+        document.getElementById('lightbox-close').addEventListener('click', hide);
+        lightbox.addEventListener('click', (e) => { if (e.target === lightbox) hide(); });
+        document.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('hidden')) return;
+            if (e.key === 'Escape') hide();
+            if (e.key === 'ArrowLeft') show(current - 1);
+            if (e.key === 'ArrowRight') show(current + 1);
+        });
+    })();
+    </script>
+
     <script>
     function initSearchSuggest(inputId, suggestId) {
         const input = document.getElementById(inputId);

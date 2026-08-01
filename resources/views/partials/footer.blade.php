@@ -23,7 +23,6 @@
                     <li><a href="{{ route('shop') }}" class="hover:text-grass-400 transition-colors">Boutique</a></li>
                     <li><a href="{{ route('gallery.index') }}" class="hover:text-grass-400 transition-colors">Photothèque</a></li>
                     <li><a href="#championnats" class="hover:text-grass-400 transition-colors">Championnats</a></li>
-                    <li><a href="{{ route('login') }}" class="hover:text-grass-400 transition-colors">Espace Admin</a></li>
                 </ul>
             </div>
 
@@ -45,7 +44,7 @@
 
         <div class="mt-10 pt-6 border-t border-pitch-800 flex flex-col sm:flex-row items-center justify-between gap-3">
             <p class="text-xs text-pitch-500">&copy; {{ date('Y') }} {{ $globalSite->name }} — Tous droits réservés.</p>
-            <p class="text-xs text-pitch-500">Maillots &amp; tenues de sport · Cameroun 🇨🇲 · Prix en FCFA</p>
+            <p class="text-xs text-pitch-500">Maillots &amp; tenues de sport · Cameroun 🇨🇲</p>
         </div>
     </div>
 </footer>

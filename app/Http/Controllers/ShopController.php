@@ -10,10 +10,12 @@ class ShopController extends Controller
 {
     public function index(Request $request)
     {
+        $champSlug = $request->route('championship') ?? $request->query('championship');
+
         $query = Product::with('championship')->where('is_active', true);
 
-        if ($request->filled('championship')) {
-            $query->whereHas('championship', fn ($q) => $q->where('slug', $request->championship));
+        if ($champSlug) {
+            $query->whereHas('championship', fn ($q) => $q->where('slug', $champSlug));
         }
 
         if ($request->filled('search')) {
@@ -38,9 +40,9 @@ class ShopController extends Controller
 
         $products = $query->paginate(12)->withQueryString();
         $championships = Championship::where('is_active', true)->orderBy('sort_order')->orderBy('name')->get();
-        $activeChampionship = $request->championship ? Championship::where('slug', $request->championship)->first() : null;
+        $activeChampionship = $champSlug ? Championship::where('slug', $champSlug)->first() : null;
 
-        return view('pages.shop', compact('products', 'championships', 'activeChampionship'));
+        return view('pages.shop', compact('products', 'championships', 'activeChampionship', 'champSlug'));
     }
 
     public function suggest(Request $request)

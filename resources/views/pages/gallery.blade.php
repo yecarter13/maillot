@@ -29,7 +29,7 @@
         @if ($photos->isNotEmpty())
         <div class="columns-1 sm:columns-2 lg:columns-3 gap-4 sm:gap-5 [column-fill:_balance]">
             @foreach ($photos as $photo)
-            <figure class="group relative mb-4 sm:mb-5 break-inside-avoid bg-white rounded-2xl overflow-hidden border border-pitch-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <figure data-gallery="phototheque" data-src="{{ $photo->image_url }}" data-caption="{{ $photo->customer_name }}{{ $photo->location ? ' · ' . $photo->location : '' }}" class="group relative mb-4 sm:mb-5 break-inside-avoid bg-white rounded-2xl overflow-hidden border border-pitch-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 cursor-pointer">
                 <div class="relative overflow-hidden bg-pitch-50">
                     @if ($photo->image_url)
                     <img src="{{ $photo->image_url }}" alt="Client satisfait : {{ $photo->customer_name }}" loading="lazy" class="w-full object-cover group-hover:scale-105 transition-transform duration-500 {{ $loop->index % 3 === 0 ? 'aspect-[4/5]' : ($loop->index % 3 === 1 ? 'aspect-square' : 'aspect-[4/3]') }}">

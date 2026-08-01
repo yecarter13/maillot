@@ -151,7 +151,7 @@
             <div class="flex w-max animate-marquee">
                 <div class="flex gap-4 sm:gap-5">
                     @foreach ($customerPhotos as $photo)
-                    <figure class="relative shrink-0 w-40 sm:w-56 lg:w-72 rounded-2xl overflow-hidden bg-pitch-900 shadow-md">
+                    <figure data-gallery="phototheque" data-src="{{ $photo->image_url }}" data-caption="{{ $photo->customer_name }}{{ $photo->location ? ' · ' . $photo->location : '' }}" class="relative shrink-0 w-40 sm:w-56 lg:w-72 rounded-2xl overflow-hidden bg-pitch-900 shadow-md cursor-pointer">
                         @if ($photo->image_url)
                         <img src="{{ $photo->image_url }}" alt="Client satisfait : {{ $photo->customer_name }}" loading="lazy" class="w-full h-40 sm:h-48 lg:h-56 object-cover">
                         @endif
@@ -167,7 +167,7 @@
                 </div>
                 <div class="flex gap-4 sm:gap-5" aria-hidden="true">
                     @foreach ($customerPhotos as $photo)
-                    <figure class="relative shrink-0 w-40 sm:w-56 lg:w-72 rounded-2xl overflow-hidden bg-pitch-900 shadow-md">
+                    <figure data-gallery="phototheque" data-src="{{ $photo->image_url }}" data-caption="{{ $photo->customer_name }}{{ $photo->location ? ' · ' . $photo->location : '' }}" class="relative shrink-0 w-40 sm:w-56 lg:w-72 rounded-2xl overflow-hidden bg-pitch-900 shadow-md cursor-pointer">
                         @if ($photo->image_url)
                         <img src="{{ $photo->image_url }}" alt="" loading="lazy" class="w-full h-40 sm:h-48 lg:h-56 object-cover">
                         @endif

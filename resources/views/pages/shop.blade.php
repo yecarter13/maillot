@@ -32,12 +32,12 @@
                 <div class="lg:sticky lg:top-24 bg-white rounded-2xl border border-pitch-100 p-5">
                     <h2 class="font-semibold text-pitch-900 text-sm uppercase tracking-wider">Championnats</h2>
                     <div class="mt-3 flex flex-wrap lg:flex-col gap-2">
-                        <a href="{{ route('shop') }}" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ !request('championship') ? 'bg-grass-500 text-white' : 'bg-pitch-50 text-pitch-700 hover:bg-pitch-100' }}">
+                        <a href="{{ route('shop') }}" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ !$champSlug ? 'bg-grass-500 text-white' : 'bg-pitch-50 text-pitch-700 hover:bg-pitch-100' }}">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
                             Tous
                         </a>
                         @foreach ($championships as $champ)
-                        <a href="{{ route('shop.championship', $champ->slug) }}" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request('championship') === $champ->slug ? 'bg-grass-500 text-white' : 'bg-pitch-50 text-pitch-700 hover:bg-pitch-100' }}">
+                        <a href="{{ route('shop.championship', $champ->slug) }}" class="inline-flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ $champSlug === $champ->slug ? 'bg-grass-500 text-white' : 'bg-pitch-50 text-pitch-700 hover:bg-pitch-100' }}">
                             {{ $champ->name }}
                         </a>
                         @endforeach
@@ -63,8 +63,8 @@
                     <p></p>
                     @endif
                     <form action="{{ route('shop') }}" method="GET" class="flex items-center gap-2">
-                        @if (request('championship'))
-                        <input type="hidden" name="championship" value="{{ request('championship') }}">
+                        @if ($champSlug)
+                        <input type="hidden" name="championship" value="{{ $champSlug }}">
                         @endif
                         @if (request('search'))
                         <input type="hidden" name="search" value="{{ request('search') }}">
