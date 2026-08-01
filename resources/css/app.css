@@ -1,0 +1,102 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --color-pitch-50: #f4f6fb;
+    --color-pitch-100: #e6eaf4;
+    --color-pitch-200: #cdd6e8;
+    --color-pitch-300: #a7b6d5;
+    --color-pitch-400: #7b90be;
+    --color-pitch-500: #5b70a7;
+    --color-pitch-600: #48598c;
+    --color-pitch-700: #3c4973;
+    --color-pitch-800: #333e61;
+    --color-pitch-900: #1e2440;
+    --color-pitch-950: #12162b;
+
+    --color-grass-50: #f0fdf4;
+    --color-grass-100: #dcfce7;
+    --color-grass-200: #bbf7d0;
+    --color-grass-300: #86efac;
+    --color-grass-400: #4ade80;
+    --color-grass-500: #22c55e;
+    --color-grass-600: #16a34a;
+    --color-grass-700: #15803d;
+    --color-grass-800: #166534;
+    --color-grass-900: #14532d;
+
+    --color-flame: #ff6b00;
+    --color-flame-dark: #e05e00;
+    --color-flame-light: #ff8533;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-slide-left {
+    animation: slideInLeft 0.6s ease-out forwards;
+}
+
+.animate-slide-right {
+    animation: slideInRight 0.6s ease-out forwards;
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.4s ease-out forwards;
+}
+
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+
+html {
+    scroll-behavior: smooth;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+    animation: marquee 32s linear infinite;
+    will-change: transform;
+}
+
+.animate-marquee:hover {
+    animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .animate-marquee {
+        animation-play-state: paused;
+    }
+}
