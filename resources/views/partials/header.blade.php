@@ -29,7 +29,7 @@
             <div class="hidden md:flex items-center flex-1 max-w-md mx-4 lg:mx-10">
                 <form action="{{ route('shop') }}" method="GET" class="relative w-full" autocomplete="off">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Rechercher un club, un championnat, une équipe..."
-                           class="w-full pl-10 pr-4 py-2 bg-pitch-800 border border-pitch-600 rounded-lg text-sm text-white placeholder-pitch-400 focus:outline-none focus:border-grass-500 focus:ring-1 focus:ring-grass-500 transition-all duration-200" id="search-desktop">
+                           class="w-full pl-10 pr-4 py-2 bg-pitch-800 border border-pitch-600 rounded-lg text-base text-white placeholder-pitch-400 focus:outline-none focus:border-grass-500 focus:ring-1 focus:ring-grass-500 transition-all duration-200" id="search-desktop">
                     <button type="submit" class="absolute left-3 top-1/2 -translate-y-1/2">
                         <svg class="w-4 h-4 text-pitch-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -42,7 +42,7 @@
             <div class="flex md:hidden flex-1 min-w-0 mx-1">
                 <form action="{{ route('shop') }}" method="GET" class="relative w-full" autocomplete="off">
                     <input type="text" name="search" value="{{ request('search') }}" placeholder="Rechercher..."
-                           class="w-full pl-6 pr-1 py-1 bg-pitch-800 border border-pitch-600 rounded-lg text-[10px] leading-tight text-white placeholder-pitch-400 focus:outline-none focus:border-grass-500 transition-all" id="search-navbar-mobile">
+                           class="w-full pl-6 pr-1 py-1.5 bg-pitch-800 border border-pitch-600 rounded-lg text-base text-white placeholder-pitch-400 focus:outline-none focus:border-grass-500 transition-all" id="search-navbar-mobile">
                     <button type="submit" class="absolute left-1 top-1/2 -translate-y-1/2">
                         <svg class="w-3 h-3 text-pitch-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>

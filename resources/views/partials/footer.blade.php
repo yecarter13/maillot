@@ -1,6 +1,6 @@
 <footer id="contact" class="bg-pitch-950 text-pitch-300 border-t border-pitch-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
             <div>
                 <div class="flex items-center gap-2">
                     <div class="w-8 h-8 bg-grass-500 rounded-lg flex items-center justify-center">
@@ -17,16 +17,6 @@
                     La boutique de référence au Cameroun pour les maillots de football et tenues de sport.
                     Qualité premium, prix abordables en FCFA et {{ strtolower($globalSite->deliveryInfo) }}.
                 </p>
-            </div>
-
-            <div>
-                <h3 class="text-white font-semibold text-sm uppercase tracking-wider mb-4">Navigation</h3>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="{{ route('home') }}" class="hover:text-grass-400 transition-colors">Accueil</a></li>
-                    <li><a href="{{ route('shop') }}" class="hover:text-grass-400 transition-colors">Boutique</a></li>
-                    <li><a href="{{ route('gallery.index') }}" class="hover:text-grass-400 transition-colors">Photothèque</a></li>
-                    <li><a href="#championnats" class="hover:text-grass-400 transition-colors">Championnats</a></li>
-                </ul>
             </div>
 
             <div>
