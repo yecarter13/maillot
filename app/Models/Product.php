@@ -74,7 +74,7 @@ class Product extends Model
         });
     }
 
-    protected static function uniqueSlug(string $name, ?int $ignoreId = null): string
+    public static function uniqueSlug(string $name, ?int $ignoreId = null): string
     {
         $base = Str::slug($name);
         $slug = $base;
