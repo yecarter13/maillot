@@ -63,14 +63,27 @@ class Product extends Model
     {
         static::creating(function (self $product) {
             if (empty($product->slug)) {
-                $base = Str::slug($product->name);
-                $slug = $base;
-                $i = 1;
-                while (static::where('slug', $slug)->exists()) {
-                    $slug = $base . '-' . $i++;
-                }
-                $product->slug = $slug;
+                $product->slug = static::uniqueSlug($product->name);
             }
         });
+
+        static::updating(function (self $product) {
+            if ($product->isDirty('name')) {
+                $product->slug = static::uniqueSlug($product->name, $product->id);
+            }
+        });
+    }
+
+    protected static function uniqueSlug(string $name, ?int $ignoreId = null): string
+    {
+        $base = Str::slug($name);
+        $slug = $base;
+        $i = 1;
+        while (static::where('slug', $slug)
+            ->when($ignoreId, fn ($q) => $q->where('id', '!=', $ignoreId))
+            ->exists()) {
+            $slug = $base . '-' . $i++;
+        }
+        return $slug;
     }
 }
