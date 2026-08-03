@@ -121,8 +121,8 @@
             </div>
         </div>
         <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-            @foreach ($related as $product)
-                @include('partials.product-card', ['product' => $product])
+            @foreach ($related as $relatedProduct)
+                @include('partials.product-card', ['product' => $relatedProduct])
             @endforeach
         </div>
     </div>
