@@ -135,6 +135,8 @@
     const btn = document.getElementById('whatsapp-order-btn');
     const whatsappNumber = '{{ wa_number() }}';
     const productName = @json($product->name);
+    const productClub = @json($product->club);
+    const productSeason = @json($product->season);
     const productPrice = '{{ $product->formatPrice() }}';
     const productUrl = '{{ url()->current() }}';
     let selectedSize = null;
@@ -171,6 +173,8 @@
             }
             const message = 'Bonjour ' + @json($globalSite->name) + ' ! Je souhaite commander :' +
                 '\n- Produit : ' + productName +
+                (productClub ? '\n- Club : ' + productClub : '') +
+                (productSeason ? '\n- Saison : ' + productSeason : '') +
                 (selectedSize ? '\n- Taille : ' + selectedSize : '') +
                 '\n- Prix : ' + productPrice +
                 '\n- Lien : ' + productUrl;

@@ -35,7 +35,7 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'old_price' => 'nullable|numeric|min:0|gt:0',
             'image' => 'nullable|string|max:500',
-            'gallery_images' => 'nullable|json',
+            'gallery_images' => 'nullable|string',
             'is_new' => 'boolean',
             'is_active' => 'boolean',
         ]);
@@ -48,9 +48,7 @@ class ProductController extends Controller
             $request->file('image_file')->move(base_path('public/images/products'), $name);
             $data['image'] = '/images/products/' . $name;
         }
-        if (!empty($data['gallery_images'])) {
-            $data['gallery_images'] = $this->normalizeGalleryJson($data['gallery_images']);
-        }
+        $data['gallery_images'] = $this->buildGalleryJson($data['gallery_images'] ?? '', $request->hasFile('gallery_files') ? $request->file('gallery_files') : []);
 
         Product::create($data);
 
@@ -61,7 +59,8 @@ class ProductController extends Controller
     {
         $championships = Championship::orderBy('name')->get();
         $storedGallery = json_decode($product->getRawOriginal('gallery_images') ?? '[]', true);
-        return view('admin.products.form', compact('championships', 'product', 'storedGallery'));
+        $galleryLinks = is_array($storedGallery) ? implode("\n", $storedGallery) : '';
+        return view('admin.products.form', compact('championships', 'product', 'storedGallery', 'galleryLinks'));
     }
 
     public function update(Request $request, Product $product)
@@ -76,7 +75,7 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'old_price' => 'nullable|numeric|min:0|gt:0',
             'image' => 'nullable|string|max:500',
-            'gallery_images' => 'nullable|json',
+            'gallery_images' => 'nullable|string',
             'is_new' => 'boolean',
             'is_active' => 'boolean',
         ]);
@@ -89,9 +88,9 @@ class ProductController extends Controller
             $request->file('image_file')->move(base_path('public/images/products'), $name);
             $data['image'] = '/images/products/' . $name;
         }
-        if (!empty($data['gallery_images'])) {
-            $data['gallery_images'] = $this->normalizeGalleryJson($data['gallery_images']);
-        }
+
+        $existingGallery = $product->getRawOriginal('gallery_images') ?? '[]';
+        $data['gallery_images'] = $this->buildGalleryJson($data['gallery_images'] ?? '', $request->hasFile('gallery_files') ? $request->file('gallery_files') : [], $existingGallery);
 
         $product->update($data);
 
@@ -110,12 +109,43 @@ class ProductController extends Controller
         return back()->with('success', 'Statut mis à jour.');
     }
 
-    protected function normalizeGalleryJson(string $json): string
+    protected function buildGalleryJson(string $input, array $files = [], ?string $existing = null): ?string
     {
-        $urls = json_decode($json, true);
-        if (!is_array($urls)) return $json;
-        $normalized = array_map(fn ($url) => $this->normalizeImagePath((string) $url), $urls);
-        return json_encode($normalized);
+        $urls = $this->parseGalleryInput($input);
+
+        foreach ($files as $file) {
+            if (!$file) continue;
+            $name = Str::random(20) . '.' . $file->extension();
+            $file->move(base_path('public/images/products'), $name);
+            $urls[] = '/images/products/' . $name;
+        }
+
+        if (!empty($existing)) {
+            $existingUrls = json_decode($existing, true);
+            if (is_array($existingUrls)) {
+                $urls = array_merge($urls, $existingUrls);
+            }
+        }
+
+        $urls = array_values(array_unique(array_filter(array_map(
+            fn ($url) => $this->normalizeImagePath((string) $url),
+            $urls
+        ))));
+
+        return $urls ? json_encode($urls) : null;
+    }
+
+    protected function parseGalleryInput(string $input): array
+    {
+        $input = trim($input);
+        if ($input === '') return [];
+
+        $decoded = json_decode($input, true);
+        if (is_array($decoded)) {
+            return array_values(array_filter(array_map('strval', $decoded)));
+        }
+
+        return array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $input))));
     }
 
     protected function normalizeImagePath(string $path): string

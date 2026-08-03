@@ -90,10 +90,25 @@
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-pitch-800 mb-1.5">Galerie d'images (liens)</label>
-                <textarea name="gallery_images" id="gallery_images" rows="4" placeholder="Un lien par ligne (JSON ou lignes)"
-                          class="w-full px-4 py-2.5 border border-pitch-200 rounded-lg text-sm text-pitch-900 placeholder-pitch-400 focus:outline-none focus:border-grass-500 focus:ring-1 focus:ring-grass-500">{{ old('gallery_images', isset($storedGallery) ? json_encode($storedGallery, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) : '') }}</textarea>
-                <p class="mt-1 text-xs text-pitch-400">Optionnel.</p>
+                <label class="block text-sm font-medium text-pitch-800 mb-1.5">Photos du maillot (galerie)</label>
+                <input type="file" name="gallery_files[]" id="gallery_files" accept="image/*" multiple
+                       class="w-full px-4 py-2.5 border border-pitch-200 rounded-lg text-sm text-pitch-900 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-grass-50 file:text-grass-700 file:text-xs file:font-semibold hover:file:bg-grass-100">
+                <p class="mt-1 text-xs text-pitch-400">Sélectionnez plusieurs photos pour les détails du maillot (en plus de l'image principale).</p>
+                <label class="block text-sm font-medium text-pitch-800 mt-4 mb-1.5">Galerie existante : photos actuelles</label>
+                <div class="flex flex-wrap gap-2 mb-3">
+                    @php $previewGallery = $product?->gallery_url ?? []; @endphp
+                    @if (!empty($previewGallery))
+                        @foreach ($previewGallery as $gUrl)
+                            <img src="{{ $gUrl }}" alt="" class="w-16 h-16 object-cover rounded-lg border border-pitch-100">
+                        @endforeach
+                    @else
+                        <p class="text-xs text-pitch-400">Aucune photo de galerie pour le moment.</p>
+                    @endif
+                </div>
+                <label class="block text-sm font-medium text-pitch-800 mb-1.5">Ou collez des liens d'images (un par ligne)</label>
+                <textarea name="gallery_images" id="gallery_images" rows="4" placeholder="https://example.com/photo1.jpg"
+                          class="w-full px-4 py-2.5 border border-pitch-200 rounded-lg text-sm text-pitch-900 placeholder-pitch-400 focus:outline-none focus:border-grass-500 focus:ring-1 focus:ring-grass-500">{{ old('gallery_images', $galleryLinks ?? '') }}</textarea>
+                <p class="mt-1 text-xs text-pitch-400">Vous pouvez combiner photos téléversées et liens.</p>
             </div>
         </div>
 
