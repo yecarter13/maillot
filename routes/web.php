@@ -13,6 +13,14 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/uploads/products/{file}', function (string $file) {
+    $path = dirname(base_path()) . '/uploads/products/' . basename($file);
+    if (!is_file($path)) {
+        abort(404);
+    }
+    return response()->file($path);
+})->where('file', '.*')->name('uploads.products');
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/shop', [ShopController::class, 'index'])->name('shop');
 Route::get('/shop/suggest', [ShopController::class, 'suggest'])->name('shop.suggest');

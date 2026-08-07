@@ -45,8 +45,8 @@ class ProductController extends Controller
 
         if ($request->hasFile('image_file')) {
             $name = Str::random(20) . '.' . $request->file('image_file')->extension();
-            $request->file('image_file')->move(base_path('public/images/products'), $name);
-            $data['image'] = '/images/products/' . $name;
+            $request->file('image_file')->move($this->uploadDir(), $name);
+            $data['image'] = '/uploads/products/' . $name;
         }
         $data['gallery_images'] = $this->buildGalleryJson($data['gallery_images'] ?? '', $request->hasFile('gallery_files') ? $request->file('gallery_files') : []);
 
@@ -85,8 +85,8 @@ class ProductController extends Controller
 
         if ($request->hasFile('image_file')) {
             $name = Str::random(20) . '.' . $request->file('image_file')->extension();
-            $request->file('image_file')->move(base_path('public/images/products'), $name);
-            $data['image'] = '/images/products/' . $name;
+            $request->file('image_file')->move($this->uploadDir(), $name);
+            $data['image'] = '/uploads/products/' . $name;
         }
 
         $existingGallery = $product->getRawOriginal('gallery_images') ?? '[]';
@@ -109,6 +109,15 @@ class ProductController extends Controller
         return back()->with('success', 'Statut mis à jour.');
     }
 
+    protected function uploadDir(): string
+    {
+        $dir = dirname(base_path()) . '/uploads/products';
+        if (!is_dir($dir)) {
+            @mkdir($dir, 0755, true);
+        }
+        return $dir;
+    }
+
     protected function buildGalleryJson(string $input, array $files = [], ?string $existing = null): ?string
     {
         $urls = $this->parseGalleryInput($input);
@@ -116,8 +125,8 @@ class ProductController extends Controller
         foreach ($files as $file) {
             if (!$file) continue;
             $name = Str::random(20) . '.' . $file->extension();
-            $file->move(base_path('public/images/products'), $name);
-            $urls[] = '/images/products/' . $name;
+            $file->move($this->uploadDir(), $name);
+            $urls[] = '/uploads/products/' . $name;
         }
 
         if (!empty($existing)) {
