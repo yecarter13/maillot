@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
         SiteSetting::setValue('delivery_info', 'Livraison partout au Cameroun');
         SiteSetting::setValue('hero_title', 'Les Maillots de Vos Clubs Préférés');
         SiteSetting::setValue('hero_subtitle', 'Commandez vos maillots officiels et fidèles sur WhatsApp. Paiement à la livraison. Livraison partout au Cameroun.');
-        SiteSetting::setValue('hero_image', 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?w=1920&q=80');
+        SiteSetting::setValue('hero_image', '/hero.png');
 
         $championships = [
             ['name' => 'Ligue 1', 'country' => 'France', 'slug' => 'ligue-1', 'image' => '/images/logos/ligue1.png'],
