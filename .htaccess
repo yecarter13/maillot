@@ -10,6 +10,7 @@
     RewriteRule ^robots\.txt$ public/$0 [L]
     RewriteRule ^storage/(.*)$ public/storage/$1 [L]
     RewriteRule ^images/(.*)$ public/images/$1 [L]
+    RewriteRule ^hero\.png$ public/hero.png [L]
 
     # Bloquer l'accès direct aux dossiers sensibles
     RewriteCond %{REQUEST_URI} !^/public

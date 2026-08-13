@@ -35,7 +35,7 @@ class HomeController extends Controller
         $heroTitle = SiteSetting::getValue('hero_title', 'Les Maillots de Vos Clubs Préférés');
         $heroSubtitle = SiteSetting::getValue('hero_subtitle', 'Commandez vos maillots officiels et fidèles sur WhatsApp. Livraison partout au Cameroun.');
         $heroImage = SiteSetting::getValue('hero_image', '/hero.png');
-        if (file_exists(public_path('hero.png'))) {
+        if (file_exists(public_path('hero.png')) || file_exists(base_path('public/hero.png'))) {
             $heroImage = '/hero.png';
         }
 
