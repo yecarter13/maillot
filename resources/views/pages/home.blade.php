@@ -6,53 +6,15 @@
 @section('content')
 
 {{-- HERO --}}
-<!-- heroImage::image.jpeg -->
-<section class="relative bg-pitch-950 overflow-hidden">
-    <div class="absolute inset-0">
-        <img src="/image.jpeg" alt="" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-t from-pitch-950/50 via-transparent to-pitch-950/10"></div>
-    </div>
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end pb-12 lg:pb-16 min-h-[65vh] lg:min-h-[85vh]">
-        <a href="{{ route('shop') }}" class="inline-flex items-center gap-2 px-8 py-4 bg-grass-500 hover:bg-grass-600 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-grass-500/30">
-            Voir la boutique
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-        </a>
-    </div>
-</section>
-
-{{-- IMAGE + TEXTE --}}
-<section class="py-16 lg:py-24 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            <div class="relative rounded-3xl overflow-hidden border border-pitch-100 shadow-lg">
-                <img src="/image1.jpeg" alt="{{ $globalSite->name }}" loading="lazy" class="w-full h-full object-cover">
-            </div>
-            <div>
-                <p class="text-sm font-semibold text-grass-600 uppercase tracking-widest">Qui sommes-nous ?</p>
-                <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-pitch-900 tracking-tight">{{ $globalSite->slogan ?: $globalSite->name }}</h2>
-                <p class="mt-4 text-pitch-600 leading-relaxed">
-                    {{ $globalSite->name }} vous propose des maillots officiels et fidèles de vos clubs et équipes préférés.
-                    Qualité garantie, commande simple et rapide directement sur WhatsApp, et livraison partout au Cameroun.
-                </p>
-                <ul class="mt-6 space-y-3">
-                    <li class="flex items-center gap-3 text-sm text-pitch-700">
-                        <svg class="w-5 h-5 text-grass-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                        Commande facile via WhatsApp
-                    </li>
-                    <li class="flex items-center gap-3 text-sm text-pitch-700">
-                        <svg class="w-5 h-5 text-grass-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                        Paiement à la livraison (Mobile Money / espèces)
-                    </li>
-                    <li class="flex items-center gap-3 text-sm text-pitch-700">
-                        <svg class="w-5 h-5 text-grass-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
-                        {{ $globalSite->deliveryInfo }}
-                    </li>
-                </ul>
-                <a href="{{ route('shop') }}" class="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-grass-500 hover:bg-grass-600 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-grass-500/25">
-                    Découvrir la boutique
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </a>
-            </div>
+<section class="relative bg-pitch-950">
+    <div class="relative w-full aspect-[4/3] sm:aspect-[3/2] lg:aspect-[21/9] overflow-hidden">
+        <img src="/image.jpeg" alt="" class="absolute inset-0 w-full h-full object-cover object-center">
+        <div class="absolute inset-0 bg-pitch-950/20"></div>
+        <div class="absolute inset-0 flex flex-col items-center justify-center px-4">
+            <a href="{{ route('shop') }}" class="inline-flex items-center gap-2 px-8 py-4 bg-grass-500 hover:bg-grass-600 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-grass-500/30">
+                Voir la boutique
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
         </div>
     </div>
 </section>
@@ -214,6 +176,43 @@
     </div>
 </section>
 @endif
+
+{{-- IMAGE + TEXTE --}}
+<section class="py-16 lg:py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <div class="relative rounded-3xl overflow-hidden border border-pitch-100 shadow-lg">
+                <img src="/image1.jpeg" alt="{{ $globalSite->name }}" loading="lazy" class="w-full h-full object-cover">
+            </div>
+            <div>
+                <p class="text-sm font-semibold text-grass-600 uppercase tracking-widest">Qui sommes-nous ?</p>
+                <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-pitch-900 tracking-tight">{{ $globalSite->slogan ?: $globalSite->name }}</h2>
+                <p class="mt-4 text-pitch-600 leading-relaxed">
+                    {{ $globalSite->name }} vous propose des maillots officiels et fidèles de vos clubs et équipes préférés.
+                    Qualité garantie, commande simple et rapide directement sur WhatsApp, et livraison partout au Cameroun.
+                </p>
+                <ul class="mt-6 space-y-3">
+                    <li class="flex items-center gap-3 text-sm text-pitch-700">
+                        <svg class="w-5 h-5 text-grass-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        Commande facile via WhatsApp
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-pitch-700">
+                        <svg class="w-5 h-5 text-grass-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        Paiement à la livraison (Mobile Money / espèces)
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-pitch-700">
+                        <svg class="w-5 h-5 text-grass-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        {{ $globalSite->deliveryInfo }}
+                    </li>
+                </ul>
+                <a href="{{ route('shop') }}" class="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-grass-500 hover:bg-grass-600 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-grass-500/25">
+                    Découvrir la boutique
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
 
 {{-- FAQ --}}
 <section id="faq" class="py-16 lg:py-20 bg-pitch-50">
