@@ -6,14 +6,10 @@
 @section('content')
 
 {{-- HERO --}}
-@php
-    $heroImage = file_exists(public_path('image.jpeg')) ? '/image.jpeg'
-        : (file_exists(public_path('hero.png')) ? '/hero.png'
-        : ($heroImage ?? '/hero.png'));
-@endphp
+<!-- heroImage::image.jpeg -->
 <section class="relative bg-pitch-950 overflow-hidden">
     <div class="absolute inset-0">
-        <img src="{{ $heroImage }}" alt="" class="w-full h-full object-cover">
+        <img src="/image.jpeg" alt="" class="w-full h-full object-cover">
         <div class="absolute inset-0 bg-gradient-to-t from-pitch-950/50 via-transparent to-pitch-950/10"></div>
     </div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end pb-12 lg:pb-16 min-h-[65vh] lg:min-h-[85vh]">
