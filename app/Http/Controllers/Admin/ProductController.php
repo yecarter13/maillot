@@ -12,7 +12,19 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::with('championship')->latest()->paginate(15);
+        $products = Product::with('championship')
+            ->when(request('search'), function ($q, $search) {
+                $q->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('club', 'like', "%{$search}%")
+                        ->orWhere('season', 'like', "%{$search}%")
+                        ->orWhere('sizes', 'like', "%{$search}%")
+                        ->orWhereHas('championship', fn ($c) => $c->where('name', 'like', "%{$search}%"));
+                });
+            })
+            ->latest()
+            ->paginate(15)
+            ->withQueryString();
         return view('admin.products.index', compact('products'));
     }
 

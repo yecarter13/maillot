@@ -84,15 +84,20 @@
                 <p class="mt-1 text-xs text-pitch-400">Ou collez un lien d'image ci-dessous.</p>
                 <input type="text" name="image" id="image" value="{{ old('image', $product?->getRawOriginal('image')) }}" placeholder="https://... ou /images/products/..."
                        class="mt-2 w-full px-4 py-2.5 border border-pitch-200 rounded-lg text-sm text-pitch-900 placeholder-pitch-400 focus:outline-none focus:border-grass-500 focus:ring-1 focus:ring-grass-500">
-                @if ($product?->image_url)
-                <img src="{{ $product->image_url }}" alt="" class="mt-3 w-24 h-28 object-cover rounded-lg border border-pitch-100">
-                @endif
-                @if ($product?->getRawOriginal('image'))
-                <label class="mt-2 flex items-center gap-2 text-xs font-medium text-red-600 cursor-pointer">
-                    <input type="checkbox" name="remove_image" value="1" class="rounded border-pitch-300 text-red-500 focus:ring-red-500">
-                    Supprimer l'image principale
-                </label>
-                @endif
+                <input type="hidden" name="remove_image" id="remove_image" value="0">
+                <div id="main-image-preview" class="mt-3 flex flex-wrap gap-3 items-start">
+                    @if ($product?->image_url)
+                    <div class="relative" data-main-preview data-src="{{ $product->image_url }}">
+                        <img src="{{ $product->image_url }}" alt="" class="w-24 h-28 object-cover rounded-lg border border-pitch-100">
+                        <button type="button" data-remove-main class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-red-600 hover:bg-red-700 text-white text-sm font-bold leading-none flex items-center justify-center shadow" title="Supprimer cette image" aria-label="Supprimer l'image principale">×</button>
+                    </div>
+                    @endif
+                    <div id="main-image-new" class="relative hidden" data-main-new>
+                        <img src="" alt="" class="w-24 h-28 object-cover rounded-lg border border-pitch-100">
+                        <button type="button" data-clear-main class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-red-600 hover:bg-red-700 text-white text-sm font-bold leading-none flex items-center justify-center shadow" title="Retirer cette image" aria-label="Retirer l'image choisie">×</button>
+                    </div>
+                </div>
+                <p id="main-image-removed" class="mt-2 hidden text-xs font-semibold text-red-600">Image principale supprimée — réutilisez la croix pour annuler.</p>
             </div>
 
             <div>
@@ -100,8 +105,9 @@
                 <input type="file" name="gallery_files[]" id="gallery_files" accept="image/*" multiple
                        class="w-full px-4 py-2.5 border border-pitch-200 rounded-lg text-sm text-pitch-900 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-grass-50 file:text-grass-700 file:text-xs file:font-semibold hover:file:bg-grass-100">
                 <p class="mt-1 text-xs text-pitch-400">Sélectionnez plusieurs photos pour les détails du maillot (en plus de l'image principale).</p>
-                <label class="block text-sm font-medium text-pitch-800 mt-4 mb-1.5">Galerie existante : photos actuelles</label>
-                <div class="flex flex-wrap gap-2 mb-3">
+
+                <label class="block text-sm font-medium text-pitch-800 mt-4 mb-1.5">Galerie existante</label>
+                <div id="gallery-existing" class="flex flex-wrap gap-2 mb-3">
                     @php
                         $previewGallery = $product?->gallery_url ?? [];
                         $rawGallery = $storedGallery ?? json_decode($product?->getRawOriginal('gallery_images') ?? '[]', true) ?? [];
@@ -109,20 +115,19 @@
                     @if (!empty($previewGallery))
                         @foreach ($previewGallery as $gUrl)
                             @php $gRaw = $rawGallery[$loop->index] ?? $gUrl; @endphp
-                            <div class="relative">
+                            <div class="relative" data-gallery-preview data-raw="{{ $gRaw }}">
                                 <img src="{{ $gUrl }}" alt="" class="w-16 h-16 object-cover rounded-lg border border-pitch-100">
-                                @if ($gRaw)
-                                <label class="absolute inset-x-0 bottom-0 bg-red-600/90 text-white text-[10px] font-semibold text-center leading-tight py-1 cursor-pointer rounded-b-lg hover:bg-red-600">
-                                    <input type="checkbox" name="remove_gallery_images[]" value="{{ $gRaw }}" class="sr-only peer">
-                                    <span class="peer-checked:hidden">Supprimer</span>
-                                </label>
-                                @endif
+                                <button type="button" data-remove-gallery class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-red-600 hover:bg-red-700 text-white text-sm font-bold leading-none flex items-center justify-center shadow" title="Supprimer cette photo" aria-label="Supprimer cette photo">×</button>
                             </div>
                         @endforeach
                     @else
                         <p class="text-xs text-pitch-400">Aucune photo de galerie pour le moment.</p>
                     @endif
                 </div>
+
+                <label class="block text-sm font-medium text-pitch-800 mb-1.5">Nouvelles photos choisies</label>
+                <div id="gallery-new" class="flex flex-wrap gap-2 mb-3 text-xs text-pitch-400"></div>
+
                 <label class="block text-sm font-medium text-pitch-800 mb-1.5">Ou collez des liens d'images (un par ligne)</label>
                 <textarea name="gallery_images" id="gallery_images" rows="4" placeholder="https://example.com/photo1.jpg"
                           class="w-full px-4 py-2.5 border border-pitch-200 rounded-lg text-sm text-pitch-900 placeholder-pitch-400 focus:outline-none focus:border-grass-500 focus:ring-1 focus:ring-grass-500">{{ old('gallery_images', $galleryLinks ?? '') }}</textarea>
@@ -149,4 +154,136 @@
         </div>
     </form>
 </div>
+
+@push('scripts')
+<script>
+(function () {
+    const removeMain = document.getElementById('remove_image');
+    const mainInput = document.getElementById('image_file');
+    const mainNew = document.getElementById('main-image-new');
+    const mainNewImg = mainNew ? mainNew.querySelector('img') : null;
+    const mainExisting = document.querySelector('[data-main-preview]');
+    const mainRemovedNote = document.getElementById('main-image-removed');
+
+    function setRemovedMain() {
+        if (!mainExisting) return;
+        const img = mainExisting.querySelector('img');
+        if (img) img.classList.add('opacity-40', 'grayscale');
+        if (mainRemovedNote) mainRemovedNote.classList.remove('hidden');
+    }
+    function unsetRemovedMain() {
+        if (!mainExisting) return;
+        const img = mainExisting.querySelector('img');
+        if (img) img.classList.remove('opacity-40', 'grayscale');
+        if (mainRemovedNote) mainRemovedNote.classList.add('hidden');
+    }
+
+    if (mainInput && mainNew && mainNewImg) {
+        mainInput.addEventListener('change', function () {
+            if (mainInput.files && mainInput.files[0]) {
+                mainNew.classList.remove('hidden');
+                mainNewImg.src = URL.createObjectURL(mainInput.files[0]);
+                if (mainExisting) mainExisting.classList.add('hidden');
+                unsetRemovedMain();
+                removeMain.value = '0';
+            } else {
+                mainNew.classList.add('hidden');
+                mainNewImg.src = '';
+                if (mainExisting) mainExisting.classList.remove('hidden');
+            }
+        });
+
+        const clearMainBtn = mainNew.querySelector('[data-clear-main]');
+        if (clearMainBtn) {
+            clearMainBtn.addEventListener('click', function () {
+                mainInput.value = '';
+                mainNew.classList.add('hidden');
+                mainNewImg.src = '';
+                if (mainExisting) mainExisting.classList.remove('hidden');
+                unsetRemovedMain();
+            });
+        }
+    }
+
+    const removeMainBtn = mainExisting ? mainExisting.querySelector('[data-remove-main]') : null;
+    if (removeMainBtn) {
+        removeMainBtn.addEventListener('click', function () {
+            if (removeMain.value === '1') {
+                removeMain.value = '0';
+                unsetRemovedMain();
+            } else {
+                removeMain.value = '1';
+                setRemovedMain();
+            }
+        });
+    }
+
+    const galleryInput = document.getElementById('gallery_files');
+    const galleryNew = document.getElementById('gallery-new');
+
+    if (galleryInput && galleryNew) {
+        function renderNewGallery() {
+            galleryNew.innerHTML = '';
+            if (!galleryInput.files || !galleryInput.files.length) {
+                galleryNew.textContent = 'Aucune photo choisie pour le moment.';
+                return;
+            }
+            Array.from(galleryInput.files).forEach(function (file, i) {
+                const wrap = document.createElement('div');
+                wrap.className = 'relative';
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(file);
+                img.className = 'w-16 h-16 object-cover rounded-lg border border-pitch-100';
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.textContent = '×';
+                btn.className = 'absolute -top-2 -right-2 w-6 h-6 rounded-full bg-red-600 hover:bg-red-700 text-white text-sm font-bold leading-none flex items-center justify-center shadow';
+                btn.setAttribute('aria-label', 'Retirer cette photo');
+                btn.addEventListener('click', function () {
+                    const dt = new DataTransfer();
+                    Array.from(galleryInput.files).forEach(function (f, j) {
+                        if (j !== i) dt.items.add(f);
+                    });
+                    galleryInput.files = dt.files;
+                    renderNewGallery();
+                });
+                wrap.appendChild(img);
+                wrap.appendChild(btn);
+                galleryNew.appendChild(wrap);
+            });
+        }
+
+        galleryInput.addEventListener('change', renderNewGallery);
+    }
+
+    document.querySelectorAll('[data-gallery-preview]').forEach(function (wrap) {
+        const btn = wrap.querySelector('[data-remove-gallery]');
+        const raw = wrap.getAttribute('data-raw');
+        if (!btn || !raw) return;
+        btn.addEventListener('click', function () {
+            const img = wrap.querySelector('img');
+            const existing = wrap.querySelector('input[name="remove_gallery_images[]"]');
+            if (existing) {
+                if (img) img.classList.remove('opacity-40', 'grayscale');
+                btn.textContent = '×';
+                btn.classList.remove('bg-grass-600', 'hover:bg-grass-700');
+                btn.classList.add('bg-red-600', 'hover:bg-red-700');
+                existing.remove();
+            } else {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'remove_gallery_images[]';
+                input.value = raw;
+                wrap.appendChild(input);
+                if (img) img.classList.add('opacity-40', 'grayscale');
+                btn.textContent = '↺';
+                btn.classList.remove('bg-red-600', 'hover:bg-red-700');
+                btn.classList.add('bg-grass-600', 'hover:bg-grass-700');
+            }
+        });
+    });
+})();
+</script>
+@endpush
+
 @endsection
