@@ -12,6 +12,7 @@
     RewriteRule ^images/(.*)$ public/images/$1 [L]
     RewriteRule ^hero\.png$ public/hero.png [L]
     RewriteRule ^image\.jpeg$ public/image.jpeg [L]
+    RewriteRule ^image1\.jpeg$ public/image1.jpeg [L]
 
     # Bloquer l'accès direct aux dossiers sensibles
     RewriteCond %{REQUEST_URI} !^/public

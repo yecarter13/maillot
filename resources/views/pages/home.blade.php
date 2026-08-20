@@ -9,33 +9,47 @@
 <section class="relative bg-pitch-950 overflow-hidden">
     <div class="absolute inset-0">
         <img src="{{ $heroImage }}" alt="" class="w-full h-full object-cover">
-        <div class="absolute inset-0 bg-gradient-to-r from-pitch-950/60 via-pitch-950/30 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-pitch-950/50 via-transparent to-pitch-950/10"></div>
     </div>
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
-        <div class="max-w-2xl animate-fade-in">
-            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-grass-500/15 text-grass-400 text-xs font-semibold border border-grass-500/30">
-                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l1.9 5.7L20 8l-4.5 3.9 1.4 5.6L12 14.4 7.1 17.5l1.4-5.6L4 8l6.1-.3z"/></svg>
-                Paiement à la livraison · Livraison partout au Cameroun
-            </span>
-            <h1 class="mt-5 text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
-                {{ $heroTitle }}
-            </h1>
-            @if ($globalSite->slogan)
-            <p class="mt-3 inline-flex items-center gap-2 text-lg sm:text-xl font-bold text-flame italic">
-                <svg class="w-5 h-5 text-grass-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l1.9 5.7L20 8l-4.5 3.9 1.4 5.6L12 14.4 7.1 17.5l1.4-5.6L4 8l6.1-.3z"/></svg>
-                {{ $globalSite->slogan }}
-            </p>
-            @endif
-            <p class="mt-4 text-base sm:text-lg text-pitch-300 leading-relaxed max-w-xl">
-                {{ $heroSubtitle }}
-            </p>
-            <div class="mt-8 flex flex-wrap gap-3">
-                <a href="{{ route('shop') }}" class="inline-flex items-center gap-2 px-6 py-3 bg-grass-500 hover:bg-grass-600 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-grass-500/25">
-                    Voir la boutique
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-end pb-12 lg:pb-16 min-h-[65vh] lg:min-h-[85vh]">
+        <a href="{{ route('shop') }}" class="inline-flex items-center gap-2 px-8 py-4 bg-grass-500 hover:bg-grass-600 text-white font-bold rounded-xl transition-all duration-300 hover:scale-105 shadow-xl shadow-grass-500/30">
+            Voir la boutique
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+    </div>
+</section>
+
+{{-- IMAGE + TEXTE --}}
+<section class="py-16 lg:py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <div class="relative rounded-3xl overflow-hidden border border-pitch-100 shadow-lg">
+                <img src="/image1.jpeg" alt="{{ $globalSite->name }}" loading="lazy" class="w-full h-full object-cover">
+            </div>
+            <div>
+                <p class="text-sm font-semibold text-grass-600 uppercase tracking-widest">Qui sommes-nous ?</p>
+                <h2 class="mt-2 text-2xl sm:text-3xl font-bold text-pitch-900 tracking-tight">{{ $globalSite->slogan ?: $globalSite->name }}</h2>
+                <p class="mt-4 text-pitch-600 leading-relaxed">
+                    {{ $globalSite->name }} vous propose des maillots officiels et fidèles de vos clubs et équipes préférés.
+                    Qualité garantie, commande simple et rapide directement sur WhatsApp, et livraison partout au Cameroun.
+                </p>
+                <ul class="mt-6 space-y-3">
+                    <li class="flex items-center gap-3 text-sm text-pitch-700">
+                        <svg class="w-5 h-5 text-grass-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        Commande facile via WhatsApp
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-pitch-700">
+                        <svg class="w-5 h-5 text-grass-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        Paiement à la livraison (Mobile Money / espèces)
+                    </li>
+                    <li class="flex items-center gap-3 text-sm text-pitch-700">
+                        <svg class="w-5 h-5 text-grass-500 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                        {{ $globalSite->deliveryInfo }}
+                    </li>
+                </ul>
+                <a href="{{ route('shop') }}" class="mt-8 inline-flex items-center gap-2 px-6 py-3 bg-grass-500 hover:bg-grass-600 text-white font-semibold rounded-xl transition-all duration-300 hover:scale-105 shadow-lg shadow-grass-500/25">
+                    Découvrir la boutique
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                </a>
-                <a href="#championnats" class="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-colors border border-white/20">
-                    Par championnat
                 </a>
             </div>
         </div>
