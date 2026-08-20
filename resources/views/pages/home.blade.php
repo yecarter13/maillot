@@ -8,8 +8,8 @@
 {{-- HERO --}}
 <section class="relative bg-pitch-950 overflow-hidden">
     <div class="absolute inset-0">
-        <img src="{{ $heroImage }}" alt="" class="w-full h-full object-cover opacity-20">
-        <div class="absolute inset-0 bg-gradient-to-r from-pitch-950 via-pitch-950/80 to-pitch-950/40"></div>
+        <img src="{{ $heroImage }}" alt="" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-gradient-to-r from-pitch-950/60 via-pitch-950/30 to-transparent"></div>
     </div>
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
         <div class="max-w-2xl animate-fade-in">
