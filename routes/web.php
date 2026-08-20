@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CacheController;
 use App\Http\Controllers\Admin\ChampionshipController;
 use App\Http\Controllers\Admin\CustomerPhotoController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -55,4 +56,5 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::post('customer-photos/{photo}/toggle', [CustomerPhotoController::class, 'toggle'])->name('customer-photos.toggle');
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
+    Route::post('/cache/clear', [CacheController::class, 'clear'])->name('cache.clear');
 });

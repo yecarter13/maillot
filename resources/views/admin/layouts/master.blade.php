@@ -83,6 +83,13 @@
                         </div>
                     </div>
                     <div class="flex items-center gap-2">
+                        <form action="{{ route('admin.cache.clear') }}" method="POST" onsubmit="return confirm('Vider le cache serveur ? Les dernières modifications seront actives immédiatement.');">
+                            @csrf
+                            <button type="submit" class="hidden sm:inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-pitch-700 bg-pitch-100 border border-pitch-200 rounded-lg hover:bg-pitch-200 transition-colors" title="Vider le cache (à cliquer si une modification n'apparaît pas)">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h5M20 20v-5h-5M5.12 14.29a7 7 0 0112.76 0M6.25 6.23a7 7 0 0112.76 0"/></svg>
+                                Vider le cache
+                            </button>
+                        </form>
                         <a href="{{ route('admin.products.create') }}" class="hidden sm:inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold text-white bg-grass-600 border border-grass-600 rounded-lg hover:bg-grass-500 transition-colors">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                             Nouveau maillot
