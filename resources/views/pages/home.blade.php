@@ -6,6 +6,11 @@
 @section('content')
 
 {{-- HERO --}}
+@php
+    $heroImage = file_exists(public_path('image.jpeg')) ? '/image.jpeg'
+        : (file_exists(public_path('hero.png')) ? '/hero.png'
+        : ($heroImage ?? '/hero.png'));
+@endphp
 <section class="relative bg-pitch-950 overflow-hidden">
     <div class="absolute inset-0">
         <img src="{{ $heroImage }}" alt="" class="w-full h-full object-cover">
