@@ -87,6 +87,12 @@
                 @if ($product?->image_url)
                 <img src="{{ $product->image_url }}" alt="" class="mt-3 w-24 h-28 object-cover rounded-lg border border-pitch-100">
                 @endif
+                @if ($product?->getRawOriginal('image'))
+                <label class="mt-2 flex items-center gap-2 text-xs font-medium text-red-600 cursor-pointer">
+                    <input type="checkbox" name="remove_image" value="1" class="rounded border-pitch-300 text-red-500 focus:ring-red-500">
+                    Supprimer l'image principale
+                </label>
+                @endif
             </div>
 
             <div>
@@ -96,10 +102,22 @@
                 <p class="mt-1 text-xs text-pitch-400">Sélectionnez plusieurs photos pour les détails du maillot (en plus de l'image principale).</p>
                 <label class="block text-sm font-medium text-pitch-800 mt-4 mb-1.5">Galerie existante : photos actuelles</label>
                 <div class="flex flex-wrap gap-2 mb-3">
-                    @php $previewGallery = $product?->gallery_url ?? []; @endphp
+                    @php
+                        $previewGallery = $product?->gallery_url ?? [];
+                        $rawGallery = $storedGallery ?? json_decode($product?->getRawOriginal('gallery_images') ?? '[]', true) ?? [];
+                    @endphp
                     @if (!empty($previewGallery))
                         @foreach ($previewGallery as $gUrl)
-                            <img src="{{ $gUrl }}" alt="" class="w-16 h-16 object-cover rounded-lg border border-pitch-100">
+                            @php $gRaw = $rawGallery[$loop->index] ?? $gUrl; @endphp
+                            <div class="relative">
+                                <img src="{{ $gUrl }}" alt="" class="w-16 h-16 object-cover rounded-lg border border-pitch-100">
+                                @if ($gRaw)
+                                <label class="absolute inset-x-0 bottom-0 bg-red-600/90 text-white text-[10px] font-semibold text-center leading-tight py-1 cursor-pointer rounded-b-lg hover:bg-red-600">
+                                    <input type="checkbox" name="remove_gallery_images[]" value="{{ $gRaw }}" class="sr-only peer">
+                                    <span class="peer-checked:hidden">Supprimer</span>
+                                </label>
+                                @endif
+                            </div>
                         @endforeach
                     @else
                         <p class="text-xs text-pitch-400">Aucune photo de galerie pour le moment.</p>

@@ -18,7 +18,16 @@ Route::get('/uploads/products/{file}', function (string $file) {
     if (!is_file($path)) {
         abort(404);
     }
-    return response()->file($path);
+    $mime = function_exists('mime_content_type') ? mime_content_type($path) : null;
+    $headers = [
+        'Cache-Control' => 'public, max-age=31536000, immutable',
+        'Pragma' => 'public',
+        'Expires' => gmdate('D, d M Y H:i:s \G\M\T', time() + 31536000),
+    ];
+    if ($mime) {
+        $headers['Content-Type'] = $mime;
+    }
+    return response()->file($path, $headers);
 })->where('file', '.*')->name('uploads.products');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');

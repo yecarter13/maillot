@@ -23,9 +23,23 @@
 
             {{-- IMAGE --}}
             <div class="animate-fade-in">
+                @php
+                    $lightboxItems = collect(array_merge([$product->image_url], $product->gallery_url))
+                        ->filter()
+                        ->map(fn ($src) => ['src' => $src, 'caption' => $product->name, 'alt' => $product->name])
+                        ->values();
+                @endphp
                 <div class="relative bg-pitch-50 rounded-3xl overflow-hidden border border-pitch-100">
                     @if ($product->image_url)
-                    <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full aspect-[4/5] object-cover">
+                    <button type="button" data-gallery="product-{{ $product->id }}" data-gallery-items="{{ $lightboxItems->toJson() }}" data-src="{{ $product->image_url }}" data-caption="{{ $product->name }}" data-alt="{{ $product->name }}" aria-label="Agrandir la photo" class="relative block w-full group">
+                        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" class="w-full aspect-[4/5] object-cover transition-transform duration-500 group-hover:scale-105">
+                        <span class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-pitch-950/20">
+                            <span class="bg-black/50 text-white text-xs font-semibold px-3 py-1.5 rounded-full backdrop-blur flex items-center gap-1.5">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7"/></svg>
+                                Agrandir
+                            </span>
+                        </span>
+                    </button>
                     @else
                     <div class="w-full aspect-[4/5] flex items-center justify-center text-pitch-300">
                         <svg class="w-24 h-24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
@@ -44,8 +58,8 @@
                 @if (count($product->gallery_url))
                 <div class="mt-4 grid grid-cols-4 gap-3">
                     @foreach ($product->gallery_url as $img)
-                    <button type="button" data-gallery="{{ $img }}" class="gallery-thumb rounded-xl overflow-hidden border-2 border-transparent hover:border-grass-500 transition-colors bg-pitch-50">
-                        <img src="{{ $img }}" alt="" class="w-full aspect-square object-cover">
+                    <button type="button" class="gallery-thumb rounded-xl overflow-hidden border-2 border-transparent hover:border-grass-500 transition-colors bg-pitch-50" aria-label="Voir cette photo">
+                        <img src="{{ $img }}" alt="{{ $product->name }}" class="w-full aspect-square object-cover">
                     </button>
                     @endforeach
                 </div>

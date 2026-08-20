@@ -36,7 +36,10 @@
         <button type="button" id="lightbox-prev" class="hidden absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 text-white/80 hover:text-white transition-colors" aria-label="Précédent">
             <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
         </button>
-        <figure class="max-h-full max-w-4xl mx-auto flex flex-col items-center">
+        <figure class="relative max-h-full max-w-4xl mx-auto flex flex-col items-center">
+            <div id="lightbox-loader" class="hidden absolute inset-0 flex items-center justify-center pointer-events-none">
+                <svg class="w-12 h-12 animate-spin text-white/60" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path></svg>
+            </div>
             <img id="lightbox-img" src="" alt="" class="max-h-[80vh] max-w-full rounded-xl object-contain shadow-2xl">
             <figcaption id="lightbox-caption" class="mt-3 text-white text-sm"></figcaption>
         </figure>
@@ -54,16 +57,41 @@
         const cap = document.getElementById('lightbox-caption');
         const prevBtn = document.getElementById('lightbox-prev');
         const nextBtn = document.getElementById('lightbox-next');
+        const loader = document.getElementById('lightbox-loader');
         let items = [];
         let current = 0;
 
+        function showLoader() {
+            if (loader) loader.classList.remove('hidden');
+        }
+
+        function hideLoader() {
+            if (loader) loader.classList.add('hidden');
+        }
+
+        function preload(src) {
+            if (!src) return;
+            const p = new Image();
+            p.src = src;
+        }
+
         function render() {
             if (!items.length) return;
-            img.src = items[current].src;
+            const target = items[current].src;
+            if (img.getAttribute('src') !== target) {
+                showLoader();
+                img.onload = function () { hideLoader(); };
+                img.onerror = function () { hideLoader(); };
+                img.src = target;
+            }
             img.alt = items[current].alt || '';
             cap.textContent = items[current].caption || '';
             prevBtn.classList.toggle('hidden', items.length <= 1);
             nextBtn.classList.toggle('hidden', items.length <= 1);
+            const prev = items[(current - 1 + items.length) % items.length];
+            const next = items[(current + 1) % items.length];
+            preload(prev.src);
+            preload(next.src);
         }
 
         function show(index) {
@@ -84,16 +112,27 @@
             el.addEventListener('click', (e) => {
                 e.preventDefault();
                 const gallery = el.getAttribute('data-gallery');
-                const seen = new Set();
-                items = Array.from(document.querySelectorAll('[data-gallery="' + gallery + '"]')).map((x) => ({
-                    src: x.getAttribute('data-src'),
-                    caption: x.getAttribute('data-caption') || '',
-                    alt: x.getAttribute('data-alt') || ''
-                })).filter((x) => {
-                    if (!x.src || seen.has(x.src)) return false;
-                    seen.add(x.src);
-                    return true;
-                });
+                const itemsAttr = el.getAttribute('data-gallery-items');
+                if (itemsAttr) {
+                    try {
+                        items = JSON.parse(itemsAttr);
+                    } catch (err) {
+                        items = [];
+                    }
+                    items = items.filter((x) => x && x.src);
+                } else {
+                    const seen = new Set();
+                    items = Array.from(document.querySelectorAll('[data-gallery="' + gallery + '"]')).map((x) => ({
+                        src: x.getAttribute('data-src'),
+                        caption: x.getAttribute('data-caption') || '',
+                        alt: x.getAttribute('data-alt') || ''
+                    })).filter((x) => {
+                        if (!x.src || seen.has(x.src)) return false;
+                        seen.add(x.src);
+                        return true;
+                    });
+                }
+                if (!items.length) return;
                 const index = items.findIndex((x) => x.src === el.getAttribute('data-src'));
                 show(index === -1 ? 0 : index);
             });

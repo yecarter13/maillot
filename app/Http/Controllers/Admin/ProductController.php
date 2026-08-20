@@ -87,10 +87,22 @@ class ProductController extends Controller
             $name = Str::random(20) . '.' . $request->file('image_file')->extension();
             $request->file('image_file')->move($this->uploadDir(), $name);
             $data['image'] = '/uploads/products/' . $name;
+        } elseif ($request->boolean('remove_image')) {
+            $data['image'] = null;
         }
 
-        $existingGallery = $product->getRawOriginal('gallery_images') ?? '[]';
-        $data['gallery_images'] = $this->buildGalleryJson($data['gallery_images'] ?? '', $request->hasFile('gallery_files') ? $request->file('gallery_files') : [], $existingGallery);
+        $existingGallery = json_decode($product->getRawOriginal('gallery_images') ?? '[]', true);
+        if (!is_array($existingGallery)) {
+            $existingGallery = [];
+        }
+        $removeGallery = $request->input('remove_gallery_images', []);
+        if (!is_array($removeGallery)) {
+            $removeGallery = [$removeGallery];
+        }
+        $existingGallery = array_values(array_filter($existingGallery, function ($url) use ($removeGallery) {
+            return $url !== null && !in_array((string) $url, array_map('strval', $removeGallery), true);
+        }));
+        $data['gallery_images'] = $this->buildGalleryJson($data['gallery_images'] ?? '', $request->hasFile('gallery_files') ? $request->file('gallery_files') : [], $existingGallery ? json_encode($existingGallery) : null);
 
         $product->update($data);
 
